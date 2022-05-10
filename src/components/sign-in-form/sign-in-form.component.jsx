@@ -1,14 +1,15 @@
 /* IMPORTS */
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../../contexts/user.context";
+
 import {
-  createAuthUserWithEmailAndPassword,
   signInWithGooglePopup,
   createUserDocumentFromAuth,
+  signInAuthUserWithEmailAndPassword,
 } from "../../utils/firebase/firebase.utils";
 import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
 import "./sign-in-form.styles.scss";
-import { signInAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 
 const defaultFormFields = {
   email: "",
@@ -19,6 +20,9 @@ const defaultFormFields = {
 const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
+
+  // User context
+  const { setCurrentUser } = useContext(UserContext);
 
   // Reset form fields after sign up completes
   const resetFormFields = () => {
@@ -35,6 +39,7 @@ const SignInForm = () => {
   // On Click Handler
   const signInWithGoogle = async () => {
     const { user } = await signInWithGooglePopup();
+    setCurrentUser(user);
     await createUserDocumentFromAuth(user);
   };
 
@@ -44,12 +49,14 @@ const SignInForm = () => {
 
     // Sign in with email and password
     try {
-      const response = await signInAuthUserWithEmailAndPassword(
+      const { user } = await signInAuthUserWithEmailAndPassword(
         email,
         password
       );
 
-      console.log(response);
+      // Set user in context
+      setCurrentUser(user);
+
       resetFormFields();
     } catch (err) {
       // Switch Statement
