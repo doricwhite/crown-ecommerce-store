@@ -1,6 +1,6 @@
 /* IMPORTS */
-import { useState, useContext } from "react";
-import { UserContext } from "../../contexts/user.context";
+import { useState } from "react";
+// import { UserContext } from "../../contexts/user.context";
 
 import {
   signInWithGooglePopup,
@@ -22,7 +22,7 @@ const SignInForm = () => {
   const { email, password } = formFields;
 
   // User context
-  const { setCurrentUser } = useContext(UserContext);
+  // const { setCurrentUser } = useContext(UserContext);
 
   // Reset form fields after sign up completes
   const resetFormFields = () => {
@@ -38,9 +38,7 @@ const SignInForm = () => {
 
   // On Click Handler
   const signInWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup();
-    setCurrentUser(user);
-    await createUserDocumentFromAuth(user);
+    await signInWithGooglePopup();
   };
 
   // Handles action when the form is submitted
@@ -55,7 +53,7 @@ const SignInForm = () => {
       );
 
       // Set user in context
-      setCurrentUser(user);
+      // setCurrentUser(user);
 
       resetFormFields();
     } catch (err) {
