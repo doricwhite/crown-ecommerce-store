@@ -11,7 +11,14 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  writeBatch,
+} from "firebase/firestore";
 
 // API Information
 const firebaseConfig = {
@@ -38,6 +45,24 @@ export const signInWithGooglePopup = () =>
 
 // Firestore DB
 export const db = getFirestore();
+
+// Adding collection to firestore DB
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = collection(db, collectionKey);
+  const batch = writeBatch(db);
+
+  objectsToAdd.forEach((object) => {
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    batch.set(docRef, object);
+  });
+
+  await batch.commit();
+
+  console.log("Firebase batch process complete");
+};
 
 export const createUserDocumentFromAuth = async (
   userAuth,
