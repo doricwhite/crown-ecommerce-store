@@ -9,6 +9,7 @@ import {
 
 // Reducer utils
 import { createAction } from "../utils/reducer/reducer.utils";
+import { USER_ACTION_TYPES } from "../store/user/user.types";
 
 // Actual value you want to access
 export const UserContext = createContext({
@@ -17,9 +18,9 @@ export const UserContext = createContext({
 });
 
 // Reducer switch types
-export const USER_ACTION_TYPES = {
-  SET_CURRENT_USER: "SET_CURRENT_USER",
-};
+// export const USER_ACTION_TYPES = {
+//   SET_CURRENT_USER: "SET_CURRENT_USER",
+// };
 
 // Reducer
 const userReducer = (state, action) => {
