@@ -2,23 +2,9 @@
 import { compose, legacy_createStore, applyMiddleware } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { loggerMiddleware } from "./middleware/logger";
 
 import { rootReducer } from "./root-reducer";
-
-// Writing your own Middleware
-const loggerMiddleware = (store) => (next) => (action) => {
-  if (!action.type) {
-    return next(action);
-  }
-
-  console.log("type: ", action.type);
-  console.log("payload: ", action.payload);
-  console.log("currentState: ", store.getState());
-
-  // Next State
-  next(action);
-  console.log("next state: ", store.getState());
-};
 
 /* Redux-Persist */
 const persistConfig = {
@@ -29,9 +15,19 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const middleWares = [loggerMiddleware];
+const middleWares = [
+  process.env.NODE_ENV !== "production" && loggerMiddleware,
+].filter(Boolean); // Only show logs when in development
 
-const composedEnhancers = compose(applyMiddleware(...middleWares));
+//Compose modified to you Redux DevTools chrome extension
+const composedEnhancer =
+  (process.env.NODE_ENV !== "production" &&
+    window &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+  compose;
+
+// const composedEnhancers = compose(applyMiddleware(...middleWares));
+const composedEnhancers = composedEnhancer(applyMiddleware(...middleWares));
 
 export const store = legacy_createStore(
   // rootReducer,
