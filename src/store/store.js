@@ -4,6 +4,9 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { loggerMiddleware } from "./middleware/logger";
 
+/**Redux Thunk */
+import thunk from "redux-thunk";
+
 import { rootReducer } from "./root-reducer";
 
 /* Redux-Persist */
@@ -17,6 +20,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const middleWares = [
   process.env.NODE_ENV !== "production" && loggerMiddleware,
+  thunk, // redux-thunk
 ].filter(Boolean); // Only show logs when in development
 
 //Compose modified to you Redux DevTools chrome extension
