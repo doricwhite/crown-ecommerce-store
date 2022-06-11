@@ -4,9 +4,10 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { loggerMiddleware } from "./middleware/logger";
 
-/**Redux Thunk */
-import thunk from "redux-thunk";
+/* Redux Saga */
+import createSagaMiddleware from "@redux-saga/core";
 
+import { rootSaga } from "./root-saga";
 import { rootReducer } from "./root-reducer";
 
 /* Redux-Persist */
@@ -17,11 +18,15 @@ const persistConfig = {
   whitelist: ["cart"],
 };
 
+// Redux Saga Middleware
+const sagaMiddleware = createSagaMiddleware();
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+// Middleware
 const middleWares = [
   process.env.NODE_ENV !== "production" && loggerMiddleware,
-  thunk, // redux-thunk
+  sagaMiddleware, // redux-saga
 ].filter(Boolean); // Only show logs when in development
 
 //Compose modified to you Redux DevTools chrome extension
@@ -40,5 +45,8 @@ export const store = legacy_createStore(
   undefined,
   composedEnhancers
 );
+
+// Run saga
+sagaMiddleware.run(rootSaga);
 
 export const persistor = persistStore(store);
