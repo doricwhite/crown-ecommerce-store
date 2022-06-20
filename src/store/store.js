@@ -1,8 +1,8 @@
-// import logger from "redux-logger";
+import logger from "redux-logger";
 import { compose, legacy_createStore, applyMiddleware } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { loggerMiddleware } from "./middleware/logger";
+// import { loggerMiddleware } from "./middleware/logger";
 
 /* Redux Saga */
 import createSagaMiddleware from "@redux-saga/core";
@@ -25,7 +25,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // Middleware
 const middleWares = [
-  process.env.NODE_ENV !== "production" && loggerMiddleware,
+  process.env.NODE_ENV !== "production" && logger,
   sagaMiddleware, // redux-saga
 ].filter(Boolean); // Only show logs when in development
 
