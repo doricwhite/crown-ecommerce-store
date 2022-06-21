@@ -5,15 +5,6 @@ export const setCurrentUser = (user) => {
   return createAction(USER_ACTION_TYPES.SET_CURRENT_USER, user);
 };
 
-/**
- * 
- * CHECK_USER_SESSION: "user/CHECK_USER_SESSION",
-  GOOGLE_SIGN_IN_START: "user/GOOGLE_SIGN_IN_START",
-  EMAIL_SIGN_IN_START: "user/EMAIL_SIGN_IN_START",
-  SIGN_IN_SUCCESS: "user/SIGN_IN_SUCCESS",
-  SIGN_IN_FAILURE: "user/SIGN_IN_FAILURE",
- */
-
 // User Session Check
 export const checkUserSession = () =>
   createAction(USER_ACTION_TYPES.CHECK_USER_SESSION);
@@ -33,3 +24,31 @@ export const signInSuccess = (user) =>
 // Sign In Failure
 export const signInFailed = (error) =>
   createAction(USER_ACTION_TYPES.SIGN_IN_FAILED, error);
+
+// Sign Up Start
+export const signUpStart = (email, password, displayName) =>
+  createAction(USER_ACTION_TYPES.SIGN_UP_START, {
+    email,
+    password,
+    displayName,
+  });
+
+// Sign Up Success
+export const signUpSuccess = (user, additionalDetails) =>
+  createAction(USER_ACTION_TYPES.SIGN_UP_SUCCESS, { user, additionalDetails });
+
+// Sign Up Failed
+export const signUpFailed = (error) =>
+  createAction(USER_ACTION_TYPES.SIGN_UP_FAILED, error);
+
+// Sign Out Start
+export const signOutStart = () =>
+  createAction(USER_ACTION_TYPES.SIGN_OUT_START);
+
+// Sign Out Success
+export const signOutSuccess = () =>
+  createAction(USER_ACTION_TYPES.SIGN_OUT_SUCCESS);
+
+// Sign Out Failed
+export const signOutFailed = (error) =>
+  createAction(USER_ACTION_TYPES.SIGN_OUT_FAILED, error);
