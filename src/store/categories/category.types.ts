@@ -13,7 +13,11 @@ export type CategoryItem = {
 };
 
 export type Category = {
-  tile: string;
+  title: string;
   imageUrl: string;
   items: CategoryItem[];
+};
+
+export type CategoryMap = {
+  [key: string]: CategoryItem[];
 };
