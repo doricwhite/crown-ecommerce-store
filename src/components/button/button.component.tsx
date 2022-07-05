@@ -34,7 +34,7 @@ const Button: FC<ButtonProps> = ({
 }) => {
   const CustomButton = getButton(buttonType);
   return (
-    <CustomButton disable={isLoading} {...otherProps}>
+    <CustomButton disabled={isLoading} {...otherProps}>
       {" "}
       {isLoading ? <ButtonSpinner /> : children}{" "}
     </CustomButton>
