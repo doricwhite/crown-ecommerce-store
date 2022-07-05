@@ -1,11 +1,9 @@
 /* IMPORTS */
-import { useState } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 
-import {
-  createAuthUserWithEmailAndPassword,
-  createUserDocumentFromAuth,
-} from "../../utils/firebase/firebase.utils";
+import { AuthError, AuthErrorCodes } from "firebase/auth";
+
 import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
 
@@ -36,14 +34,14 @@ const SignUpForm = () => {
   };
 
   // Handles changes on input fields
-  const handleChange = (evt) => {
+  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = evt.target;
 
     setFormFields({ ...formFields, [name]: value });
   };
 
   // Handles action when the form is submitted
-  const handleSubmit = async (evt) => {
+  const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     // Check for matching passwords
@@ -59,7 +57,7 @@ const SignUpForm = () => {
       resetFormFields();
     } catch (err) {
       /* If email already exists */
-      if (err.code === "auth/email-already-in-use") {
+      if ((err as AuthError).code === AuthErrorCodes.EMAIL_EXISTS) {
         alert("Unable to create user, email provided already in use");
       } else {
         console.log("Error encountered creating the user", err);
@@ -70,7 +68,7 @@ const SignUpForm = () => {
   // Renders on the webpage
   return (
     <SignUpContainer>
-      <h2>Dont have an account?</h2>
+      <h2>Don't have an account?</h2>
       <span>Sign up with your email and password</span>
 
       <form action="" onSubmit={handleSubmit}>

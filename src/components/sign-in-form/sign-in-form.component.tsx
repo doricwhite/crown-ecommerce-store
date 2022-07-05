@@ -1,6 +1,8 @@
 /* IMPORTS */
-import { useState } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
+
+import { AuthError, AuthErrorCodes } from "firebase/auth";
 
 import {
   googleSignInStart,
@@ -29,7 +31,7 @@ const SignInForm = () => {
   };
 
   // Handles changes on input fields
-  const handleChange = (evt) => {
+  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = evt.target;
 
     setFormFields({ ...formFields, [name]: value });
@@ -41,7 +43,7 @@ const SignInForm = () => {
   };
 
   // Handles action when the form is submitted
-  const handleSubmit = async (evt) => {
+  const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     // Sign in with email and password
@@ -52,8 +54,8 @@ const SignInForm = () => {
     } catch (err) {
       // Check if password is correct or user exists
       if (
-        err.code === "auth/wrong-password" ||
-        err.code === "auth/user-not-found"
+        (err as AuthError).code === AuthErrorCodes.INVALID_PASSWORD ||
+        (err as AuthError).code === AuthErrorCodes.USER_DELETED
       ) {
         alert("Incorrect email and/or password");
       }
