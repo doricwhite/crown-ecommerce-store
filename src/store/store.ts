@@ -48,7 +48,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 const middleWares = [
   process.env.NODE_ENV !== "production" && logger,
   sagaMiddleware, // redux-saga
-].filter((middleware): middleware is Middleware => Boolean(middleWares)); // Only show logs when in development
+].filter((middleware): middleware is Middleware => Boolean(middleware)); // Only show logs when in development
 
 //Compose modified to you Redux DevTools chrome extension
 const composedEnhancer =
